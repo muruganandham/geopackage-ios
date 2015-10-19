@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Geopackage-ios by ngageoint</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Geopackage-ios</h1>
+      <h2 class="project-tagline">GeoPackage iOS Library</h2>
+      <a href="https://github.com/ngageoint/geopackage-ios" class="btn">View on GitHub</a>
+      <a href="https://github.com/ngageoint/geopackage-ios/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/ngageoint/geopackage-ios/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="geopackage-ios" class="anchor" href="#geopackage-ios" aria-hidden="true"><span class="octicon octicon-link"></span></a>GeoPackage iOS</h1>
+
+<h3>
+<a id="geopackage-ios-lib" class="anchor" href="#geopackage-ios-lib" aria-hidden="true"><span class="octicon octicon-link"></span></a>GeoPackage iOS Lib</h3>
+
+<p>The <a href="http://ngageoint.github.io/GeoPackage/">GeoPackage Libraries</a> were developed at the <a href="http://www.nga.mil/">National Geospatial-Intelligence Agency (NGA)</a> in collaboration with <a href="http://www.bit-sys.com/">BIT Systems</a>. The government has "unlimited rights" and is releasing this software to increase the impact of government investments by providing developers with the opportunity to take things in new directions. The software use, modification, and distribution rights are stipulated within the <a href="http://choosealicense.com/licenses/mit/">MIT license</a>.</p>
+
+<h3>
+<a id="pull-requests" class="anchor" href="#pull-requests" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pull Requests</h3>
+
+<p>If you'd like to contribute to this project, please make a pull request. We'll review the pull request and discuss the changes. All pull request contributions to this project will be released under the MIT license.</p>
+
+<p>Software source code previously released under an open source license and then modified by NGA staff is considered a "joint work" (see 17 USC § 101); it is partially copyrighted, partially public domain, and as a whole is protected by the copyrights of the non-government authors and must be released according to the terms of the original open source license.</p>
+
+<h3>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>About</h3>
+
+<p><a href="http://ngageoint.github.io/geopackage-ios/">GeoPackage iOS</a> is a <a href="http://ngageoint.github.io/GeoPackage/">GeoPackage Library</a> Objective-C SDK implementation of the Open Geospatial Consortium <a href="http://www.geopackage.org/">GeoPackage</a> <a href="http://www.geopackage.org/spec/">spec</a>.  It is listed as an <a href="http://www.geopackage.org/#implementations">OGC GeoPackage Implementation</a> by the National Geospatial-Intelligence Agency.</p>
+
+<p>The GeoPackage SDK provides the ability to manage GeoPackage files providing read, write, import, export, share, and open support. Open GeoPackage files provide read and write access to features and tiles. Feature support includes Well-Known Binary and iOS Map shape translations. Tile generation supports creation by URL or features. Tile providers supporting GeoPackage format, standard tile API, and feature tile generation.</p>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<h4>
+<a id="implementations" class="anchor" href="#implementations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implementations</h4>
+
+<h5>
+<a id="geopackage-mapcache" class="anchor" href="#geopackage-mapcache" aria-hidden="true"><span class="octicon octicon-link"></span></a>GeoPackage MapCache</h5>
+
+<p>The <a href="https://github.com/ngageoint/geopackage-mapcache-ios">GeoPackage MapCache</a> app provides an extensive standalone example on how to use the SDK.</p>
+
+<h4>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h4>
+
+<pre><code>// NSString * geoPackageFile = ...;
+// GPKGSMapView *mapView = ...;
+
+// Get a manager
+GPKGGeoPackageManager * manager = [GPKGGeoPackageFactory getManager];
+
+// Available databases
+NSArray * databases = [self.manager databases];
+
+// Import database
+BOOL imported = [manager importGeoPackageFromPath:geoPackageFile];
+
+// Open database
+GPKGGeoPackage * geoPackage = [manager open:[databases objectAtIndex:0]);
+
+// GeoPackage Table DAOs
+GPKGSpatialReferenceSystemDao * srsDao = [geoPackage getSpatialReferenceSystemDao];
+GPKGContentsDao * contentsDao =  [geoPackage getContentsDao];
+GPKGGeometryColumnsDao * geometryColumnsDao = [geoPackage getGeometryColumnsDao];
+GPKGTileMatrixSetDao * tileMatrixSetDao = [geoPackage getTileMatrixSetDao];
+GPKGTileMatrixDao * tileMatrixDao = [self getTileMatrixDao];
+GPKGDataColumnsDao *dataColumnsDao = [self getDataColumnsDao];
+GPKGDataColumnConstraintsDao * dataColumnConstraintsDao = [self getDataColumnConstraintsDao];
+GPKGMetadataDao * metadataDao = [self getMetadataDao];
+GPKGMetadataReferenceDao * metadataReferenceDao = [self getMetadataReferenceDao];
+GPKGExtensionsDao * extensionsDao = [self getExtensionsDao];
+
+// Feature and tile tables
+NSArray * features = [geopackage getFeatureTables];
+NSArray * tiles = [geopackage getTileTables];
+
+// Query Features
+NSString * featureTable = [features objectAtIndex:0];
+GPKGFeatureDao * featureDao = [geoPackage getFeatureDaoWithTableName:featureTable];
+GPKGMapShapeConverter * converter = [[GPKGMapShapeConverter alloc] initWithProjection:featureDao.projection];
+GPKGResultSet * featureResults = [featureDao queryForAll];
+@try {
+    while([featureResults moveToNext]){
+        GPKGFeatureRow * featureRow = [featureDao getFeatureRow:featureResults];
+        GPKGGeometryData * geometryData = [featureRow getGeometry];
+        WKBGeometry * geometry = geometryData.geometry;
+        GPKGMapShape * shape = [converter toShapeWithGeometry:geometry];
+        GPKGMapShape * mapShape = [GPKGMapShapeConverter addMapShape:shape toMapView:mapView];
+        // ...
+    }
+}@finally {
+    [featureResults close];
+}
+
+// Query Tiles
+NSString * tileTable = [tiles objectAtIndex:0];
+GPKGTileDao * tileDao = [geoPackage getTileDaoWithTableName:tileTable];
+GPKGResultSet * tileResults = [tileDao queryForAll];
+@try {
+    while([tileResults moveToNext]){
+        GPKGTileRow * tileRow = [tileDao getTileRow:tileResults];
+        NSData * tileBytes = [tileRow getTileData];
+        UIImage * tileImage = [tileRow getTileDataImage];
+        // ...
+    }
+}@finally {
+    [tileResults close];
+}
+
+// Tile Overlay (GeoPackage or Standard API)
+MKTileOverlay * tileOverlay = [GPKGOverlayFactory getTileOverlayWithTileDao:tileDao];
+tileOverlay.canReplaceMapContent = false
+[mapView addOverlay:tileOverlay];
+
+// Feature Tile Overlay (dynamically draw tiles from features)
+GPKGFeatureTiles * featureTiles = [[GPKGFeatureTiles alloc] initWithFeatureDao:featureDao];
+GPKGFeatureOverlay * featureOverlay = [[GPKGFeatureOverlay alloc] initWithFeatureTiles:featureTiles];
+[self.mapView addOverlay:featureOverlay];
+
+// URL Tile Generator (generate tiles from a URL)
+GPKGTileGenerator * urlTileGenerator = [[GPKGUrlTileGenerator alloc] initWithGeoPackage:geoPackage andTableName:@"url_tile_table" andTileUrl:@"http://url/{z}/{x}/{y}.png" andMinZoom:2 andMaxZoom:7];
+int urlTileCount = [urlTileGenerator generateTiles];
+
+// Feature Tile Generator (generate tiles from features)
+GPKGTileGenerator * featureTileGenerator = [[GPKGFeatureTileGenerator alloc] initWithGeoPackage:geoPackage andTableName:[NSString stringWithFormat:@"%@_tiles", featureTable] andFeatureTiles:featureTiles andMinZoom:10 andMaxZoom:15];
+int featureTileCount = [featureTileGenerator generateTiles];
+
+// Close database when done
+[geoPackage close];
+</code></pre>
+
+<h3>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build</h3>
+
+<p>The following repositories must be built first:</p>
+
+<ul>
+<li><a href="https://github.com/ngageoint/geopackage-wkb-ios">GeoPackage WKB iOS</a></li>
+</ul>
+
+<p>Build this repository using Xcode and/or CocoaPods:</p>
+
+<pre><code>pod install
+</code></pre>
+
+<p>Open geopackage-ios.xcworkspace in Xcode</p>
+
+<h3>
+<a id="include-library" class="anchor" href="#include-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>Include Library</h3>
+
+<p>Use this repository by specifying it in a Podfile using a supported option:</p>
+
+<pre><code>pod 'geopackage-ios', :git =&gt; 'https://github.com/ngageoint/geopackage-iOS.git', :branch =&gt; 'master'
+pod 'geopackage-ios', :git =&gt; 'https://github.com/ngageoint/geopackage-iOS.git', :tag =&gt; '1.0.0'
+pod 'geopackage-ios', :path =&gt; '../geopackage-ios'
+pod 'wkb-ios', :path =&gt; '../wkb-ios' # Inherited dependency to wkb-ios may need to be declared until published as a pod
+pod 'geopackage-ios', '~&gt; 1.0' # Not yet supported, CocoaPod coming soon
+</code></pre>
+
+<h3>
+<a id="remote-dependencies" class="anchor" href="#remote-dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Remote Dependencies</h3>
+
+<ul>
+<li>
+<a href="https://github.com/ngageoint/geopackage-wkb-ios">WKB</a> (The MIT License (MIT)) - GeoPackage Well Known Binary Lib</li>
+<li>
+<a href="https://github.com/AFNetworking/AFNetworking">AFNetworking</a> (The MIT License (MIT)) - Networking framework</li>
+<li>
+<a href="https://trac.osgeo.org/proj/">proj4</a> (The MIT License (MIT)) - Cartographic projection software</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/ngageoint/geopackage-ios">Geopackage-ios</a> is maintained by <a href="https://github.com/ngageoint">ngageoint</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
