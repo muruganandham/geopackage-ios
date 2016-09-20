@@ -404,7 +404,6 @@
 -(enum GPKGFeatureIndexType) getIndexedType{
     
     enum GPKGFeatureIndexType indexType = GPKG_FIT_NONE;
-    
     // Check for an indexed type
     for (NSString * typeName in self.indexLocationQueryOrder) {
         enum GPKGFeatureIndexType type = [GPKGFeatureIndexTypes fromName: typeName];
@@ -420,6 +419,13 @@
     }
     
     return indexType;
+}
+
+- (GPKGBoundingBox *) getMinimalBoundingBox {
+    enum GPKGFeatureIndexType type = [self getIndexedType];
+    if (type != GPKG_FIT_GEOPACKAGE)
+        return nil;
+    return [self.featureTableIndex getMinimalBoundingBox];
 }
 
 @end
