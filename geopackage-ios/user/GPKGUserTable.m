@@ -9,6 +9,8 @@
 #import "GPKGUserTable.h"
 #import "GPKGUtils.h"
 
+NSString * const GPKG_UNIQUE_COLUMN_NAME =@"ogc_fid";
+
 @implementation GPKGUserTable
 
 -(instancetype) initWithTable: (NSString *) tableName andColumns: (NSArray *) columns{
@@ -56,10 +58,13 @@
         self.nameToIndex = tempNameToIndex;
         
         if(pk == nil){
-            [NSException raise:@"No Primary Key" format:@"No primary key column was found for table '%@'", tableName];
+            
+            self.pkIndex = [self getOgcFidIndex];
         }
-        self.pkIndex = [pk intValue];
-
+        else
+        {
+            self.pkIndex = [pk intValue];
+        }
     }
     return self;
 }
@@ -89,6 +94,10 @@
         [NSException raise:@"No Column" format:@"Column does not exists in table '%@', column: %@", self.tableName, columnName];
     }
     return [index intValue];
+}
+
+-(int)getOgcFidIndex {
+    return [self getColumnIndexWithColumnName:GPKG_UNIQUE_COLUMN_NAME];
 }
 
 -(NSString *) getColumnNameWithIndex: (int) index{

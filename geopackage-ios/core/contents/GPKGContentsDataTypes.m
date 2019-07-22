@@ -11,7 +11,7 @@
 
 NSString * const GPKG_CDT_FEATURES_NAME = @"features";
 NSString * const GPKG_CDT_TILES_NAME = @"tiles";
-NSString * const GPKG_CDT_ATTRIBUTES_NAME = @"attributes";
+NSString * const GPKG_CDT_ATTRIBUTES_NAME = @"aspatial";//@"attributes";
 NSString * const GPKG_CDT_ELEVATION_TILES_NAME = @"2d-gridded-coverage";
 NSString * const GPKG_CDT_MBVECTOR_TILES_NAME = @"mbvectiles";
 
